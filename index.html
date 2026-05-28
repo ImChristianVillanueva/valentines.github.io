@@ -1,42 +1,195 @@
 <!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Will you be my Valentine?</title>
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@600&display=swap");
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Will you be my Valentine?🥹❤️" />
-  <meta name="author" content="Anish" />
-  <meta name="google-site-verification" content="A9PEz5S-vxuNEG2xsGVK1IdfeP5FBflKWeKKLMVwgzo" />
-  <meta name="msvalidate.01" content="D919EEC68AFB633DFFC35FA2609D73A8" />
-  <meta name="robots" content="index, follow" />
-  <meta name="og:title" content="Be my Valentine?❤️" />
-  <meta name="og:description" content="Will you be my Valentine?🥹❤️" />
-  <meta name="og:image" content="https://i.imgur.com/8q884zIl.png" />
-  <meta name="og:url" content="https://formyvalentine.netlify.app/" />
-  <meta name="og:site_name" content="Be my Valentine?❤️" />
-  <meta name="og:type" content="website" />
-  <meta name="twitter:title" content="Be my Valentine?❤️" />
-  <meta name="twitter:description" content="Will you be my Valentine?🥹❤️" />
-  <meta name="twitter:image" content="https://i.imgur.com/8q884zIl.png" />
-  <meta name="twitter:url" content="https://formyvalentine.netlify.app/" />
-  <meta name="twitter:creator" content="@xevenbiswas" />
-  <title>Be my Valentine?</title>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "kwx3exx6k9");
-</script>
-</head>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-</body>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				background-color: #ffeef2;
+				font-family: "Poppins", sans-serif;
+				overflow: hidden;
+				position: relative;
+			}
 
+			/* Bumabagsak na Hearts Background */
+			.heart-bg {
+				position: absolute;
+				font-size: 20px;
+				color: rgba(255, 77, 109, 0.4);
+				animation: floatUp 4s linear infinite;
+				z-index: 1;
+				user-select: none;
+			}
+
+			@keyframes floatUp {
+				0% {
+					transform: translateY(100vh) scale(0);
+					opacity: 0;
+				}
+				50% {
+					opacity: 0.8;
+				}
+				100% {
+					transform: translateY(-10vh) scale(1.2);
+					opacity: 0;
+				}
+			}
+
+			.container {
+				position: relative;
+				z-index: 10;
+				text-align: center;
+				padding: 20px;
+			}
+
+			.gif-container img {
+				width: 180px;
+				height: auto;
+				margin-bottom: 15px;
+			}
+
+			h1 {
+				font-family: "Caveat", cursive;
+				color: #2b2b2b;
+				font-size: 3.5rem;
+				margin-bottom: 25px;
+				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+			}
+
+			.buttons {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 25px;
+				min-height: 100px;
+			}
+
+			button {
+				padding: 10px 28px;
+				font-size: 1.2rem;
+				font-weight: 600;
+				border: none;
+				border-radius: 8px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			#yesBtn {
+				background-color: #2ec4b6; /* Greenish/Teal katulad ng nasa pic */
+				color: white;
+				box-shadow: 0 4px 10px rgba(46, 196, 182, 0.3);
+			}
+
+			#noBtn {
+				background-color: #e63946; /* Red/Pinkish katulad ng nasa pic */
+				color: white;
+				position: absolute;
+				box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Dito lalabas ang mga floating hearts gamit ang JS -->
+		<div id="heartContainer"></div>
+
+		<div class="container">
+			<div class="gif-container">
+				<!-- Cute bear na may hawak na bulaklak katulad sa image_92a481.png -->
+				<img
+					id="statusGif"
+					src="https://media.tenor.com/w9vbyZunw7IAAAAi/milk-and-mocha-bear.gif"
+					alt="Bear with Flowers"
+				/>
+			</div>
+			<h1 id="question">Will you be my Valentine?</h1>
+
+			<div class="buttons">
+				<button id="yesBtn" onclick="celebrate()">Yes</button>
+				<button
+					id="noBtn"
+					onmouseover="moveNoButton()"
+					onclick="moveNoButton()"
+				>
+					No
+				</button>
+			</div>
+		</div>
+
+		<script>
+			const noBtn = document.getElementById("noBtn");
+			const yesBtn = document.getElementById("yesBtn");
+			const question = document.getElementById("question");
+			const gif = document.getElementById("statusGif");
+
+			let yesScale = 1;
+			let noScale = 1;
+
+			// Gumawa ng floating hearts background effect
+			function createHeart() {
+				const heart = document.createElement("div");
+				heart.classList.add("heart-bg");
+				// Random na hugis ng puso
+				const heartTypes = ["❤️", "💖", "💝", "💕", "♥"];
+				heart.innerText =
+					heartTypes[Math.floor(Math.random() * heartTypes.length)];
+
+				heart.style.left = Math.random() * 100 + "vw";
+				heart.style.animationDuration = Math.random() * 3 + 3 + "s"; // sa pagitan ng 3s to 6s
+
+				document.getElementById("heartContainer").appendChild(heart);
+
+				setTimeout(() => {
+					heart.remove();
+				}, 6000);
+			}
+
+			// Mag-generate ng puso kada 300ms
+			setInterval(createHeart, 300);
+
+			// Kapag tinangkang piliin ang NO
+			function moveNoButton() {
+				// Lalayo sa random na lokasyon
+				const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
+				const y =
+					Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
+
+				noBtn.style.left = x + "px";
+				noBtn.style.top = y + "px";
+
+				// Lalaki ang YES button
+				yesScale += 0.3;
+				yesBtn.style.transform = `scale(${yesScale})`;
+
+				// Liliit ang NO button
+				if (noScale > 0.2) {
+					noScale -= 0.1;
+					noBtn.style.transform = `scale(${noScale})`;
+				}
+			}
+
+			// Kapag pinindot ang YES
+			function celebrate() {
+				question.innerHTML = "Yehey! I love you! ❤️✨";
+				// Papalitan ng mas masayang GIF ng mga oso
+				gif.src = "https://media.tenor.com/9v_K8396D3UAAAAi/milk-and-mocha.gif";
+
+				noBtn.style.display = "none";
+				yesBtn.style.transform = "scale(1)";
+				yesBtn.style.display = "none"; // Pwede ring itago na pagkatapos sumagot
+			}
+		</script>
+	</body>
 </html>
