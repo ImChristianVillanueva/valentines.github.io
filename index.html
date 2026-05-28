@@ -3,9 +3,9 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Will you be my Valentine?</title>
+		<title>Will you be my Valentine? 🌹</title>
 		<style>
-			@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@600&display=swap");
+			@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;700&display=swap");
 
 			* {
 				margin: 0;
@@ -18,96 +18,179 @@
 				justify-content: center;
 				align-items: center;
 				min-height: 100vh;
-				background-color: #ffeef2;
+				background: linear-gradient(135deg, #ffeef2 0%, #ffd6e0 100%);
 				font-family: "Poppins", sans-serif;
 				overflow: hidden;
 				position: relative;
 			}
 
-			/* Bumabagsak na Hearts Background */
+			/* Floating Hearts Background */
 			.heart-bg {
 				position: absolute;
-				font-size: 20px;
+				font-size: 24px;
 				color: rgba(255, 77, 109, 0.4);
 				animation: floatUp 4s linear infinite;
 				z-index: 1;
 				user-select: none;
+				pointer-events: none;
 			}
 
 			@keyframes floatUp {
 				0% {
-					transform: translateY(100vh) scale(0);
+					transform: translateY(105vh) scale(0) rotate(0deg);
 					opacity: 0;
 				}
 				50% {
 					opacity: 0.8;
 				}
 				100% {
-					transform: translateY(-10vh) scale(1.2);
+					transform: translateY(-10vh) scale(1.3) rotate(360deg);
 					opacity: 0;
 				}
 			}
 
+			/* Main Card Container */
 			.container {
 				position: relative;
 				z-index: 10;
 				text-align: center;
-				padding: 20px;
+				padding: 40px 30px;
+				background: rgba(255, 255, 255, 0.85);
+				backdrop-filter: blur(10px);
+				border-radius: 24px;
+				box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
+				border: 2px solid rgba(255, 255, 255, 0.6);
+				max-width: 480px;
+				width: 90%;
+				transition: transform 0.2s ease;
+			}
+
+			/* Shake Animation para sa Angry Reaction */
+			.shake {
+				animation: shakeEffect 0.3s ease-in-out;
+			}
+
+			@keyframes shakeEffect {
+				0%,
+				100% {
+					transform: translateX(0);
+				}
+				20%,
+				60% {
+					transform: translateX(-10px);
+				}
+				40%,
+				80% {
+					transform: translateX(10px);
+				}
+			}
+
+			.gif-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 180px;
+				margin-bottom: 20px;
 			}
 
 			.gif-container img {
 				width: 180px;
 				height: auto;
-				margin-bottom: 15px;
+				border-radius: 12px;
+				transition: all 0.3s ease;
 			}
 
 			h1 {
 				font-family: "Caveat", cursive;
 				color: #2b2b2b;
 				font-size: 3.5rem;
-				margin-bottom: 25px;
-				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+				margin-bottom: 15px;
+				line-height: 1.2;
+				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+				transition: all 0.3s ease;
 			}
 
+			/* Bukod na container sa TAAS para sa mga Hirit (Safe zone mula sa No button) */
+			.hint-container {
+				min-height: 40px; /* May permanenteng space para hindi gumalaw ang layout kapag nagbago ang text */
+				margin-bottom: 20px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.angry-hint {
+				font-size: 1.1rem;
+				color: #ff4d6d;
+				font-weight: 600;
+				line-height: 1.4;
+			}
+
+			/* White box boundary ng mga buttons */
 			.buttons {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				gap: 25px;
-				min-height: 100px;
+				min-height: 160px; /* Tamang-tamang space para sa pag-ilag */
+				position: relative;
+				background: rgba(
+					255,
+					255,
+					255,
+					0.5
+				); /* Light visual cue ng bounding box */
+				border-radius: 16px;
+				padding: 10px;
 			}
 
 			button {
-				padding: 10px 28px;
+				padding: 12px 35px;
 				font-size: 1.2rem;
-				font-weight: 600;
+				font-weight: 700;
 				border: none;
-				border-radius: 8px;
+				border-radius: 12px;
 				cursor: pointer;
-				transition: all 0.2s ease;
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+				transition:
+					transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+					background-color 0.2s ease;
+			}
+
+			button:active {
+				transform: scale(0.95);
 			}
 
 			#yesBtn {
-				background-color: #2ec4b6; /* Greenish/Teal katulad ng nasa pic */
+				background-color: #2ec4b6;
 				color: white;
-				box-shadow: 0 4px 10px rgba(46, 196, 182, 0.3);
+				z-index: 11;
+			}
+
+			#yesBtn:hover {
+				background-color: #20a396;
 			}
 
 			#noBtn {
-				background-color: #e63946; /* Red/Pinkish katulad ng nasa pic */
+				background-color: #e63946;
 				color: white;
 				position: absolute;
-				box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+				z-index: 12;
+				transition: all 0.1s ease;
+				/* Initial position para hindi pumatong sa Yes button sa simula */
+				right: 40px;
+			}
+
+			#noBtn:hover {
+				background-color: #c92a36;
 			}
 		</style>
 	</head>
 	<body>
-		<!-- Dito lalabas ang mga floating hearts gamit ang JS -->
 		<div id="heartContainer"></div>
 
-		<div class="container">
+		<div class="container" id="mainCard">
 			<div class="gif-container">
-				<!-- Cute bear na may hawak na bulaklak katulad sa image_92a481.png -->
 				<img
 					id="statusGif"
 					src="asa-removebg-preview.png"
@@ -116,13 +199,13 @@
 			</div>
 			<h1 id="question">Will you be my Valentine?</h1>
 
-			<div class="buttons">
+			<div class="hint-container">
+				<p class="angry-hint" id="hintText"></p>
+			</div>
+
+			<div class="buttons" id="btnContainer">
 				<button id="yesBtn" onclick="celebrate()">Yes</button>
-				<button
-					id="noBtn"
-					onmouseover="moveNoButton()"
-					onclick="moveNoButton()"
-				>
+				<button id="noBtn" onmouseover="handleNo()" onclick="handleNo()">
 					No
 				</button>
 			</div>
@@ -132,63 +215,107 @@
 			const noBtn = document.getElementById("noBtn");
 			const yesBtn = document.getElementById("yesBtn");
 			const question = document.getElementById("question");
+			const hintText = document.getElementById("hintText");
 			const gif = document.getElementById("statusGif");
+			const mainCard = document.getElementById("mainCard");
+			const btnContainer = document.getElementById("btnContainer");
 
 			let yesScale = 1;
 			let noScale = 1;
+			let noClickCount = 0;
 
-			// Gumawa ng floating hearts background effect
+			const angryResponses = [
+				{
+					text: "Wait, mali yata napindot mo? 🥺",
+					gif: "https://media.tenor.com/wVf7Ams6EToAAAAi/milk-and-mocha-bear.gif",
+				},
+				{
+					text: "Bakit ayaw mo?! 😡",
+					gif: "https://media.tenor.com/83u-E3v3K78AAAAi/milk-and-mocha.gif",
+				},
+				{
+					text: "Isipin mo mabuti ha... 🔪😤",
+					gif: "https://media.tenor.com/EdpY8YgHDo0AAAAi/milk-and-mocha.gif",
+				},
+				{
+					text: "Umiiyak na ako dito oh! 😭💔",
+					gif: "https://media.tenor.com/gK9q3n_2W_cAAAAi/milk-mocha.gif",
+				},
+				{
+					text: "Sige na please? Mag-YES ka na! 🧸❤️",
+					gif: "https://media.tenor.com/Z0gE2C6wK30AAAAi/milk-and-mocha.gif",
+				},
+			];
+
 			function createHeart() {
 				const heart = document.createElement("div");
 				heart.classList.add("heart-bg");
-				// Random na hugis ng puso
-				const heartTypes = ["❤️", "💖", "💝", "💕", "♥"];
+				const heartTypes = ["❤️", "💖", "💝", "💕", "🎀", "💘"];
 				heart.innerText =
 					heartTypes[Math.floor(Math.random() * heartTypes.length)];
 
 				heart.style.left = Math.random() * 100 + "vw";
-				heart.style.animationDuration = Math.random() * 3 + 3 + "s"; // sa pagitan ng 3s to 6s
+				heart.style.animationDuration = Math.random() * 2 + 3 + "s";
 
 				document.getElementById("heartContainer").appendChild(heart);
 
 				setTimeout(() => {
 					heart.remove();
-				}, 6000);
+				}, 5000);
 			}
-
-			// Mag-generate ng puso kada 300ms
 			setInterval(createHeart, 300);
 
-			// Kapag tinangkang piliin ang NO
-			function moveNoButton() {
-				// Lalayo sa random na lokasyon
-				const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
-				const y =
-					Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
+			function handleNo() {
+				// Sobrang liit na padding para dikit sa mga borders ng white button box
+				const padding = 8;
 
-				noBtn.style.left = x + "px";
-				noBtn.style.top = y + "px";
+				const containerWidth = btnContainer.clientWidth;
+				const containerHeight = btnContainer.clientHeight;
 
-				// Lalaki ang YES button
-				yesScale += 0.3;
+				// Kalkulasyon na nakakulong LANG sa loob ng .buttons element
+				const maxX = containerWidth - noBtn.offsetWidth - padding;
+				const maxY = containerHeight - noBtn.offsetHeight - padding;
+
+				const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+				const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+				noBtn.style.left = randomX + "px";
+				noBtn.style.top = randomY + "px";
+
+				// Palakihin ang YES button
+				yesScale += 0.35;
 				yesBtn.style.transform = `scale(${yesScale})`;
 
-				// Liliit ang NO button
-				if (noScale > 0.2) {
-					noScale -= 0.1;
+				// Paliitin nang bahagya ang NO button
+				if (noScale > 0.4) {
+					noScale -= 0.08;
 					noBtn.style.transform = `scale(${noScale})`;
 				}
+
+				// Shake effect sa card
+				mainCard.classList.remove("shake");
+				void mainCard.offsetWidth;
+				mainCard.classList.add("shake");
+
+				const currentResponse =
+					angryResponses[noClickCount % angryResponses.length];
+				hintText.innerHTML = currentResponse.text;
+				gif.src = currentResponse.gif;
+
+				noClickCount++;
 			}
 
-			// Kapag pinindot ang YES
 			function celebrate() {
-				question.innerHTML = "Yehey! I love you! ❤️✨";
-				// Papalitan ng mas masayang GIF ng mga oso
+				question.innerHTML = "Yehey! I love you so much! ❤️✨";
+				hintText.innerHTML = "See you on our Valentine's date! 🥰🌹";
 				gif.src = "https://media.tenor.com/9v_K8396D3UAAAAi/milk-and-mocha.gif";
 
 				noBtn.style.display = "none";
-				yesBtn.style.transform = "scale(1)";
-				yesBtn.style.display = "none"; // Pwede ring itago na pagkatapos sumagot
+				yesBtn.style.display = "none";
+
+				for (let i = 0; i < 30; i++) {
+					setTimeout(createHeart, i * 50);
+				}
 			}
 		</script>
 	</body>
